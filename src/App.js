@@ -26,19 +26,23 @@ class App extends React.Component {
       cursorImg: `url(${getCursorDataURI(COLORS[0].rgb)})`
     };
   }
+
   handleBaseplateSwitch = color => {
     this.setState({ baseColor: color });
   };
+
   handleColorSwitch = i => {
     if (i === this.state.brush) return;
     this.setState({
       brush: i,
-      cursorImg: `url(${getCursorDataURI(COLORS[i].rgb)})`
+      cursorImg: null
     });
   };
+
   handleEraser = () => {
-    this.setState({ brush: -1, cursorImg: `url(${delCursor})` });
+    this.setState({ brush: -1, cursorImg: null });
   };
+
   handleKnobChange = i => {
     this.setState(state => {
       const curColor = state.baseplate[i];
@@ -66,12 +70,23 @@ class App extends React.Component {
     });
   };
 
+  componentDidUpdate() {
+    if (this.state.cursorImg == null) {
+      const cursorImg = `url(${
+        this.state.brush === -1
+          ? delCursor
+          : getCursorDataURI(COLORS[this.state.brush].rgb)
+      })`;
+      setTimeout(() => this.setState({ cursorImg: cursorImg }), 250);
+    }
+  }
+
   render() {
+    const cursor = this.state.cursorImg
+      ? `${this.state.cursorImg} 10 10, auto`
+      : undefined;
     return (
-      <div
-        className="App"
-        style={{ cursor: `${this.state.cursorImg} 10 10, auto` }}
-      >
+      <div className="App" style={{ cursor }}>
         <header className="App-header">
           <BaseplateSwitcher
             chosen={this.state.baseColor}
