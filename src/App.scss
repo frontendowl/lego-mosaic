@@ -3,21 +3,33 @@ $colors: (
   "white": #fafafa,
   "blue": #005ccd
 );
-
-.App-header {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  padding: 1rem;
-  margin: 0 auto;
-  cursor: auto;
+.App {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "head list"
+    "baseplate list"
+    "footer footer";
+  padding: 0 1rem;
+  min-height: 100vh;
 }
 
+// ----------------
+//      HEADER
+// ----------------
+.App-header {
+  display: flex;
+  padding: 1rem 0;
+  margin: 0 auto;
+  min-width: 330px;
+
+  grid-area: head;
+}
 .base-color-switch,
 .palette {
   border: 1px solid #969696;
 }
+// BASEPLATE COLORS SWITCHER
 .base-color-switch {
   display: flex;
   flex-direction: column;
@@ -26,40 +38,32 @@ $colors: (
   height: 96px;
   margin: 0 1rem 0 0;
 }
-.base-col-radio,
-.label,
-.label-img {
-  width: 32px;
-  height: 32px;
-}
-.radio-input {
-  opacity: 0;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  border-style: none;
-  outline: none;
-  width: 0.001px;
-  height: 0.001px;
-  box-sizing: border-box;
-  position: absolute;
-  top: 0;
-  left: 0;
+.label {
+  display: block;
 }
 .base-col-radio {
-  // box-sizing: border-box;
-  cursor: pointer;
-  // margin: 0;
-  // padding: 0;
+  position: relative;
   &:hover {
     outline: 2px solid black;
     z-index: 1;
   }
 }
-
+.base-col-radio,
+.label,
+.label-img {
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+}
+.radio-input {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+// COLOR PALETTE
 .palette {
   margin: 0;
-
   display: -ms-grid;
   display: grid;
   grid-template-columns: repeat(8, 24px) 48px;
@@ -97,14 +101,20 @@ $colors: (
   }
 }
 
+// ----------------
+//   DETAILS LIST
+// ----------------
 .shopping-list {
-  min-height: 96px;
-  margin: 0 1rem;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 1rem 0 1rem 1rem;
+  width: 200px;
+  grid-area: list;
 }
 .list-head {
   font-weight: 400;
   color: #1a0080;
-  margin: 0;
+  margin: 0 0 0.75rem;
   padding: 0;
 }
 .details-list {
@@ -122,6 +132,9 @@ $colors: (
   }
 }
 
+// ----------------
+//     CANVAS
+// ----------------
 .baseplate {
   box-sizing: border-box;
   display: -ms-grid;
@@ -130,11 +143,13 @@ $colors: (
   height: 330px;
   grid-template-columns: repeat(32, 10px);
   grid-template-rows: repeat(32, 10px);
-  border-width: 10px;
+  border-width: 5px;
   border-style: solid;
 
   margin: 0 auto;
   outline: 1px solid rgba(0, 0, 0, 0.1);
+
+  grid-area: baseplate;
 }
 .knob {
   background-repeat: no-repeat;
@@ -170,7 +185,7 @@ $colors: (
   transform: translate(-50%, -50%);
 }
 @for $i from 11 through 26 {
-  @media screen and (min-width: $i * 33px) {
+  @media screen and (min-width: $i * 33px + 232) and (max-width: $i * 33px + 264) {
     .App-header {
       width: $i * 33px;
     }
@@ -187,23 +202,90 @@ $colors: (
     }
   }
 }
-@media screen and (max-width: 600px) {
-  .App-header {
-    flex-direction: column;
-    align-items: flex-start;
+@for $i from 11 through 16 {
+  @media screen and (min-width: $i * 33px + 32) and (max-width: $i * 33px + 64) {
+    .App-header {
+      width: $i * 33px;
+    }
+    .baseplate {
+      width: $i * 33px;
+      height: $i * 33px;
+      grid-template-columns: repeat(32, $i * 1px);
+      grid-template-rows: repeat(32, $i * 1px);
+      border-width: floor($i / 2) * 1px;
+    }
+    .tile {
+      width: $i - 2px;
+      height: $i - 2px;
+    }
+    .shopping-list {
+      width: $i * 33px;
+    }
+  }
+}
+
+// ----------------
+//      FOOTER
+// ----------------
+.footer {
+  grid-area: footer;
+  align-self: end;
+  margin: 1rem 0;
+  text-align: center;
+  font-weight: 200;
+}
+.git-link {
+  color: rgb(21, 95, 255);
+  text-decoration: none;
+  background-image: linear-gradient(
+    to bottom,
+    rgb(21, 95, 255) 33%,
+    transparent 33%,
+    transparent
+  );
+  background-position: 0 1.03em;
+  background-repeat: repeat-x;
+  background-size: 2px 1px;
+
+  &:hover {
+    color: rgb(8, 64, 180);
+    background-image: linear-gradient(
+      to bottom,
+      rgb(8, 64, 180) 50%,
+      transparent 50%,
+      transparent
+    );
+    background-size: 2px 2px;
+  }
+}
+
+@media screen and (max-width: 592px) {
+  .App {
+    grid-template-rows: auto auto 1fr auto;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "head"
+      "baseplate"
+      "list"
+      "footer";
   }
   .shopping-list {
-    margin: 0.5rem 0;
-    min-height: 1rem;
-    order: 1;
+    margin: 0 auto;
   }
-  .base-color-switch {
-    display: flex;
-    flex-direction: row;
-    height: 32px;
+}
+@media screen and (min-width: 1122px) {
+  .App-header {
+    width: 858px;
   }
-  .palette,
-  .eraser {
-    order: 2;
+  .baseplate {
+    width: 858px;
+    height: 858px;
+    grid-template-columns: repeat(32, 26px);
+    grid-template-rows: repeat(32, 26px);
+    border-width: 13px;
+  }
+  .tile {
+    width: 24px;
+    height: 24px;
   }
 }

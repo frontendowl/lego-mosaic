@@ -27,7 +27,12 @@ class Baseplate extends React.PureComponent {
       );
     });
     return (
-      <section className={`baseplate ${this.props.baseColor}`}>{knobs}</section>
+      <section
+        className={`baseplate ${this.props.baseColor}`}
+        style={{ cursor: this.props.cursorImg }}
+      >
+        {knobs}
+      </section>
     );
   }
 }

@@ -23,7 +23,7 @@ class DetailsList extends React.PureComponent {
       <section className="shopping-list">
         <h4 className="list-head">
           {this.props.details.size
-            ? "To rebuild your design you will need flat round 1x1 tiles (design number 35381):"
+            ? "To rebuild your design you will need flat round 1x1 lego tiles (design number 35381):"
             : "Make your own lego mosaic design!"}
         </h4>
         <ul className="details-list">{details}</ul>

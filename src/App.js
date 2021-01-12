@@ -86,7 +86,7 @@ class App extends React.Component {
       ? `${this.state.cursorImg} 10 10, auto`
       : undefined;
     return (
-      <div className="App" style={{ cursor }}>
+      <div className="App">
         <header className="App-header">
           <BaseplateSwitcher
             chosen={this.state.baseColor}
@@ -97,13 +97,24 @@ class App extends React.Component {
             onColorChange={this.handleColorSwitch}
             turnOnEraser={this.handleEraser}
           />
-          <DetailsList details={this.state.details} />
         </header>
         <Baseplate
+          cursorImg={cursor}
           pins={this.state.baseplate}
           updateKnob={this.handleKnobChange}
           baseColor={this.state.baseColor}
         />
+        <DetailsList details={this.state.details} />
+        <footer className="footer">
+          frontendowl, 2021
+          <br />
+          <a
+            className="git-link"
+            href="https://github.com/frontendowl/lego-mosaic"
+          >
+            GitHub
+          </a>
+        </footer>
       </div>
     );
   }
